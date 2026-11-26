@@ -1,3 +1,4 @@
+// Guardo el primer bloque de películas que me da el ejercicio (lo que cargo nada más entrar)
 const peliculasPagina1 = {
   "Search": [
     {
@@ -75,6 +76,7 @@ const peliculasPagina1 = {
   "Response": "True"
 };
 
+// Guardo el segundo bloque de datos que tengo en reserva para cuando le dé al botón de cargar más
 const peliculasPagina2 = {
   "Search": [
     {
@@ -152,59 +154,80 @@ const peliculasPagina2 = {
   "Response": "True"
 };
 
+// Capturo los elementos del HTML que voy a ir modificando desde aquí
 const contenedor = document.getElementById("contenedor-peliculas");
 const totalResultados = document.getElementById("total-resultados");
 const btnCargarMas = document.getElementById("btn-cargar-mas");
 
+// Llevo la cuenta de cuántas llevo pintadas en pantalla (empiezo en 0)
 let mostradas = 0;
 
+// Uso esta función como una fábrica: le paso un JSON y me construye todas sus tarjetas en el HTML
 function renderizarBloque(datos) {
+    // Sumo las películas nuevas que entran al contador que ya tenía y actualizo el texto de arriba
     mostradas += datos.Search.length;
     totalResultados.textContent = "Mostrando " + mostradas + " de " + datos.totalResults + " resultados";
 
+    // Recorro el array 'Search' del objeto que acabo de recibir, una película detrás de otra
     for (let i = 0; i < datos.Search.length; i++) {
+        // Saco la película actual a una variable corta para no escribir tanto código luego
         const item = datos.Search[i];
 
+        // Creo la caja principal de la tarjeta en memoria y le pongo su clase CSS
         const tarjeta = document.createElement("article");
         tarjeta.className = "tarjeta-pelicula";
 
+        // Creo la imagen, le enchufo la URL del póster y le pongo un alt por si falla
         const imagen = document.createElement("img");
         imagen.src = item.Poster;
         imagen.alt = "Póster de " + item.Title;
 
+        // Creo el div que va a envolver todos los textos debajo de la foto
         const info = document.createElement("div");
         info.className = "info-pelicula";
 
+        // Creo el título y le meto el nombre de la peli
         const titulo = document.createElement("h2");
         titulo.textContent = item.Title;
 
+        // Creo el contenedor inferior para el año, el ID y la etiqueta de tipo
         const detalles = document.createElement("div");
         detalles.className = "detalles-pelicula";
 
+        // Creo el span donde junto el año y el código de IMDb
         const anioYId = document.createElement("span");
         anioYId.textContent = item.Year + " • " + item.imdbID;
 
+        // Creo el span de la etiqueta; si es una serie le pongo la clase azul y si no la roja por defecto
         const tipo = document.createElement("span");
         tipo.className = item.Type === "series" ? "etiqueta-tipo etiqueta-serie" : "etiqueta-tipo";
         tipo.textContent = item.Type;
 
+        // Ahora toca montar el puzle de dentro hacia afuera:
+        // Meto el año y el tipo dentro de la caja de detalles
         detalles.appendChild(anioYId);
         detalles.appendChild(tipo);
 
+        // Meto el título y la caja de detalles dentro del bloque de info
         info.appendChild(titulo);
         info.appendChild(detalles);
 
+        // Meto la imagen y el bloque de info dentro de la tarjeta principal
         tarjeta.appendChild(imagen);
         tarjeta.appendChild(info);
 
+        // Por último, inyecto la tarjeta ya terminada en el contenedor real de la página
         contenedor.appendChild(tarjeta);
     }
 }
 
+// Esta función salta cuando hago clic en el botón del HTML
 function cargarMas() {
+    // Llamo a mi fábrica pasándole el segundo bloque de datos (como usa appendChild, no borra las anteriores)
     renderizarBloque(peliculasPagina2);
+    // Escondo el botón porque ya no tengo más datos que cargar y así evito que se dupliquen
     btnCargarMas.style.display = "none";
 }
 
-// Carga inicial
+// Arranco el programa pintando el primer bloque nada más abrir la web
 renderizarBloque(peliculasPagina1);
