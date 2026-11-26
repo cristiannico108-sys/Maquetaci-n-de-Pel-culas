@@ -1,4 +1,4 @@
-let datos = {
+const datosPeliculas = {
   "Search": [
     {
       "Title": "Star Wars: Episode IV - A New Hope",
@@ -70,65 +70,61 @@ let datos = {
       "Type": "movie",
       "Poster": "https://m.media-amazon.com/images/M/MV5BMjE5NDQ5OTE4Ml5BMl5BanBnXkFtZTcwOTE3NDIzMw@@._V1_SX300.jpg"
     }
-  ]
+  ],
+  "totalResults": "4947",
+  "Response": "True"
 };
 
-let datos2 = {
-  "Search": [
-    {
-      "Title": "Star Wars: Episode IX - The Rise of Skywalker",
-      "Year": "2019",
-      "imdbID": "tt2527338",
-      "Type": "movie",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BMDljNTQ5ODItZmQwMy00M2ExLTljOTQtZTVjNGE2NTg0NGIxXkEyXkFqcGdeQXVyODkzNTgxMDg@._V1_SX300.jpg"
+const contenedor = document.getElementById("contenedor-peliculas");
+const totalResultados = document.getElementById("total-resultados");
+
+function mostrarPeliculas() {
+    // Mostrar el total de resultados del JSON
+    totalResultados.textContent = "Mostrando " + datosPeliculas.Search.length + " de " + datosPeliculas.totalResults + " resultados";
+
+    for (let i = 0; i < datosPeliculas.Search.length; i++) {
+        const peli = datosPeliculas.Search[i];
+
+        // 1. Contenedor de la tarjeta
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "tarjeta-pelicula";
+
+        // 2. Imagen del póster
+        const imagen = document.createElement("img");
+        imagen.src = peli.Poster;
+        imagen.alt = "Póster de " + peli.Title;
+
+        // 3. Contenedor de información textual
+        const info = document.createElement("div");
+        info.className = "info-pelicula";
+
+        // 4. Título de la película
+        const titulo = document.createElement("h2");
+        titulo.textContent = peli.Title;
+
+        // 5. Pie de tarjeta con año, tipo e ID de IMDb
+        const detalles = document.createElement("div");
+        detalles.className = "detalles-pelicula";
+
+        const anioYId = document.createElement("span");
+        anioYId.textContent = peli.Year + " • " + peli.imdbID;
+
+        const tipo = document.createElement("span");
+        tipo.className = "etiqueta-tipo";
+        tipo.textContent = peli.Type;
+
+        // Ensamblar elementos
+        detalles.appendChild(anioYId);
+        detalles.appendChild(tipo);
+
+        info.appendChild(titulo);
+        info.appendChild(detalles);
+
+        tarjeta.appendChild(imagen);
+        tarjeta.appendChild(info);
+
+        contenedor.appendChild(tarjeta);
     }
-  ]
-};
-
-let contenedor = document.createElement("div");
-document.body.appendChild(contenedor);
-
-function mostrarPeliculas(lista) {
-  for (let i = 0; i < lista.length; i++) {
-    let div = document.createElement("div");
-
-    let poster = document.createElement("img");
-    poster.src = lista[i].Poster;
-    div.appendChild(poster);
-
-    let info = document.createElement("div");
-
-    let titulo = document.createElement("div");
-    titulo.textContent = lista[i].Title;
-    info.appendChild(titulo);
-
-    let detalles = document.createElement("div");
-
-    let anio = document.createElement("div");
-    anio.textContent = lista[i].Year;
-    detalles.appendChild(anio);
-
-    let tipo = document.createElement("div");
-    tipo.textContent = lista[i].Type;
-    detalles.appendChild(tipo);
-
-    let id = document.createElement("div");
-    id.textContent = lista[i].imdbID;
-    detalles.appendChild(id);
-
-    info.appendChild(detalles);
-    div.appendChild(info);
-    contenedor.appendChild(div);
-  }
 }
 
-mostrarPeliculas(datos.Search);
-
-let botonCarga = document.createElement("button");
-botonCarga.textContent = "Cargar más películas";
-document.body.appendChild(botonCarga);
-
-botonCarga.addEventListener('click', () => {
-  mostrarPeliculas(datos2.Search);
-  botonCarga.style.display = "none"
-});
+mostrarPeliculas();
