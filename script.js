@@ -1,4 +1,4 @@
-const datosPeliculas = {
+const peliculasPagina1 = {
   "Search": [
     {
       "Title": "Star Wars: Episode IV - A New Hope",
@@ -75,45 +75,119 @@ const datosPeliculas = {
   "Response": "True"
 };
 
+const peliculasPagina2 = {
+  "Search": [
+    {
+      "Title": "Star Wars: Episode IX - The Rise of Skywalker",
+      "Year": "2019",
+      "imdbID": "tt2527338",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BODg5ZTNmMTUtYThlNy00NjljLWE0MGUtYmQ1NDg4NWU5MjQ1XkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Trek Into Darkness",
+      "Year": "2013",
+      "imdbID": "tt1408101",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMTk2NzczOTgxNF5BMl5BanBnXkFtZTcwODQ5ODczOQ@@._V1_SX300.jpg"
+    },
+    {
+      "Title": "A Star Is Born",
+      "Year": "2018",
+      "imdbID": "tt1517451",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNGUxZTc0NTAtNzQwMy00MmM2LTgzMGYtZWIyY2E1MGFjYmM5XkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Solo: A Star Wars Story",
+      "Year": "2018",
+      "imdbID": "tt3778644",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BOTM2NTI3NTc3Nl5BMl5BanBnXkFtZTgwNzM1OTQyNTM@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Trek Beyond",
+      "Year": "2016",
+      "imdbID": "tt2660888",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BN2FhNDI1YTYtNWI0OC00ZjYxLWJlYWEtN2ZiZjRmZDY1MWJjXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Trek: The Next Generation",
+      "Year": "1987–1994",
+      "imdbID": "tt0092455",
+      "Type": "series",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMmNiNTQ2YzYtODBjYy00ZWMwLTlmNWMtYWE1NTQ2ZTYyZmMwXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Trek: Discovery",
+      "Year": "2017–2024",
+      "imdbID": "tt5171438",
+      "Type": "series",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BOTZkZTc1ZmYtYTA3Mi00MzZhLWFmZTItZTM2NThjYWJlZGU4XkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Wars: The Clone Wars",
+      "Year": "2008–2020",
+      "imdbID": "tt0458290",
+      "Type": "series",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BOTdiODQ1MDYtZjM5My00MmQ5LTk1ZWUtZWIwYjBhZGMxZDAyXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Trek: First Contact",
+      "Year": "1996",
+      "imdbID": "tt0117731",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BZjc0OWE1NDMtNjRmMi00ZDc2LWI2ZmQtNzEwNWU4Nzg4NDA5XkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Trek II: The Wrath of Khan",
+      "Year": "1982",
+      "imdbID": "tt0084726",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BOTFkZDY5NWQtMjY4Yy00OThiLTk3YjQtMDdhYTllMTI4MTdiXkEyXkFqcGc@._V1_SX300.jpg"
+    }
+  ],
+  "totalResults": "4947",
+  "Response": "True"
+};
+
 const contenedor = document.getElementById("contenedor-peliculas");
 const totalResultados = document.getElementById("total-resultados");
+const btnCargarMas = document.getElementById("btn-cargar-mas");
 
-function mostrarPeliculas() {
-    // Mostrar el total de resultados del JSON
-    totalResultados.textContent = "Mostrando " + datosPeliculas.Search.length + " de " + datosPeliculas.totalResults + " resultados";
+let mostradas = 0;
 
-    for (let i = 0; i < datosPeliculas.Search.length; i++) {
-        const peli = datosPeliculas.Search[i];
+function renderizarBloque(datos) {
+    mostradas += datos.Search.length;
+    totalResultados.textContent = "Mostrando " + mostradas + " de " + datos.totalResults + " resultados";
 
-        // 1. Contenedor de la tarjeta
+    for (let i = 0; i < datos.Search.length; i++) {
+        const item = datos.Search[i];
+
         const tarjeta = document.createElement("article");
         tarjeta.className = "tarjeta-pelicula";
 
-        // 2. Imagen del póster
         const imagen = document.createElement("img");
-        imagen.src = peli.Poster;
-        imagen.alt = "Póster de " + peli.Title;
+        imagen.src = item.Poster;
+        imagen.alt = "Póster de " + item.Title;
 
-        // 3. Contenedor de información textual
         const info = document.createElement("div");
         info.className = "info-pelicula";
 
-        // 4. Título de la película
         const titulo = document.createElement("h2");
-        titulo.textContent = peli.Title;
+        titulo.textContent = item.Title;
 
-        // 5. Pie de tarjeta con año, tipo e ID de IMDb
         const detalles = document.createElement("div");
         detalles.className = "detalles-pelicula";
 
         const anioYId = document.createElement("span");
-        anioYId.textContent = peli.Year + " • " + peli.imdbID;
+        anioYId.textContent = item.Year + " • " + item.imdbID;
 
         const tipo = document.createElement("span");
-        tipo.className = "etiqueta-tipo";
-        tipo.textContent = peli.Type;
+        tipo.className = item.Type === "series" ? "etiqueta-tipo etiqueta-serie" : "etiqueta-tipo";
+        tipo.textContent = item.Type;
 
-        // Ensamblar elementos
         detalles.appendChild(anioYId);
         detalles.appendChild(tipo);
 
@@ -127,4 +201,10 @@ function mostrarPeliculas() {
     }
 }
 
-mostrarPeliculas();
+function cargarMas() {
+    renderizarBloque(peliculasPagina2);
+    btnCargarMas.style.display = "none";
+}
+
+// Carga inicial
+renderizarBloque(peliculasPagina1);
