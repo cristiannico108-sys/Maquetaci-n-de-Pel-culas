@@ -164,14 +164,19 @@ let mostradas = 0;
 
 // Uso esta función como una fábrica: le paso un JSON y me construye todas sus tarjetas en el HTML
 function renderizarBloque(datos) {
-    // Sumo las películas nuevas que entran al contador que ya tenía y actualizo el texto de arriba
-    mostradas += datos.Search.length;
-    totalResultados.textContent = "Mostrando " + mostradas + " de " + datos.totalResults + " resultados";
+    // Saco los valores del objeto en una lista; como el array de películas es el primero, cojo la posición [0]
+    const valoresObjeto = Object.values(datos);
+    const listaPeliculas = valoresObjeto[0];
+    const total = valoresObjeto[1];
 
-    // Recorro el array 'Search' del objeto que acabo de recibir, una película detrás de otra
-    for (let i = 0; i < datos.Search.length; i++) {
+    // Sumo las películas nuevas que entran al contador que ya tenía y actualizo el texto de arriba
+    mostradas += listaPeliculas.length;
+    totalResultados.textContent = "Mostrando " + mostradas + " de " + total + " resultados";
+
+    // Recorro la lista de películas que acabo de extraer, una detrás de otra
+    for (let i = 0; i < listaPeliculas.length; i++) {
         // Saco la película actual a una variable corta para no escribir tanto código luego
-        const item = datos.Search[i];
+        const item = listaPeliculas[i];
 
         // Creo la caja principal de la tarjeta en memoria y le pongo su clase CSS
         const tarjeta = document.createElement("article");
